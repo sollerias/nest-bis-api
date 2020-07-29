@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { Auth } from "./auth.model";
+import { Auth } from "./interfaces/auth.interface";
 
 @Injectable()
 export class AuthService {
-  private auth: Auth[] = [];
+  // private auth: Auth[] = [];
 
-  verifyAccount(name: string, password: string) {
-    console.log(name, password);
-    return {name, password};
+  async verifyAccount(auth: Auth): Promise<Auth> {
+    console.log('service auth: ', auth);
+    return auth;
   };
 };

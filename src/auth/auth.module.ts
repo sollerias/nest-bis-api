@@ -7,7 +7,8 @@ import { ServiceEntity } from "./service.entity";
 @Module({
   imports: [TypeOrmModule.forFeature([ServiceEntity])],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService],
+  exports: [AuthService]
 })
 
 export class AuthModule {};

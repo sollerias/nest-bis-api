@@ -14,6 +14,19 @@ export class AuthService {
 
   async verifyAccount(auth: Auth): Promise<Auth> {
     console.log('service auth: ', auth);
+    console.log('Find All from DB: ', await this.findAll());
     return auth;
   };
+
+  findAll(): Promise<ServiceEntity[]> {
+    return this.servicesRepository.find();
+  }
+
+  findOne(id: string): Promise<ServiceEntity> {
+    return this.servicesRepository.findOne(id);
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.servicesRepository.delete(id);
+  }
 };

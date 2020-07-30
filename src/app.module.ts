@@ -6,21 +6,29 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
-import { ServiceEntity } from './auth/service.entity';
-
+// import { ServiceEntity } from './auth/service.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     AuthModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'sollerij',
-      password: 'eLdp@2ohwNBSY3xKLB77',
-      database: 'test_db',
-      entities: [ServiceEntity],
-      logging: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DB_HOST'),
+        port: +configService.get<number>('DB_PORT'),
+        username: configService.get('DB_USER'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
+    ConfigModule.forRoot({
+      envFilePath: './src/config/dev.env',
+      isGlobal: true
+    })
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],

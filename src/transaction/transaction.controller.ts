@@ -1,6 +1,7 @@
-import { Controller, ValidationPipe, Body, Post } from '@nestjs/common';
+import { Controller, ValidationPipe, Body, Post, Get, Query } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { TransactionCreateDto } from './dto/transaction-create.dto';
+import { TransactionGetHistoryDto } from './dto/transaction-get-history.dto';
 
 @Controller('transaction')
 export class TransactionController {
@@ -16,5 +17,17 @@ export class TransactionController {
     txHash: string,
   }> {
     return this.transactionService.createTransaction(transactionCreateDto);
+  }
+
+  @Get('/get_transaction_history')
+  getWalletBalance(@Query(ValidationPipe) transactionGetHistoryDto: TransactionGetHistoryDto): Promise<{
+    total_count: number,
+    count: number,
+    page_number: number,
+    page_total: number,
+    limit: number,
+    txs: any;
+  }> {
+    return this.transactionService.getTransactionHistory(transactionGetHistoryDto);
   }
 }

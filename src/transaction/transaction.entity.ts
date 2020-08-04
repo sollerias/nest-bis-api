@@ -24,7 +24,7 @@ export class Transaction extends BaseEntity {
   isApproved: boolean;
 
   @Column()
-  timeApproved: number;
+  timeApproved: string;
 
   @Column()
   errors: string;

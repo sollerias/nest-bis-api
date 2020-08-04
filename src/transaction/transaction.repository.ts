@@ -13,19 +13,19 @@ export class TransactionRepository extends Repository<Transaction> {
     fee: string,
     txHash: string,
   }> {
-    const { coin, addressFrom, addressTo, amountCoin } = transactionCreateDto;
+    const { coin, addressFrom, addressTo, amountCoins } = transactionCreateDto;
 
     const transaction = new Transaction();
 
     const txHash = 'sdfsdfsdfsdfsfsdfsdfsf';
     const txHex = 'asdfdfffff';
     const isApproved = true;
-    const approvedTime = Date.now();
+    const approvedTime = new Date().toLocaleString();
     const errors = 'no errors';
 
     transaction.addressFrom = addressFrom;
     transaction.addressTo = addressTo;
-    transaction.amount = amountCoin;
+    transaction.amount = amountCoins;
     transaction.txHash = txHash;
     transaction.txHex = txHex;
     transaction.isApproved = isApproved;

@@ -17,5 +17,5 @@ export class TransactionCreateDto {
 
   @IsNotEmpty()
   @IsString()
-  amountCoin: string;
+  amountCoins: string;
 }

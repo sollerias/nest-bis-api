@@ -4,6 +4,7 @@ import { WalletRepository } from './wallet.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WalletImportDto } from './dto/wallet-import.dto';
 import { WalletDeleteDto } from './dto/wallet-delete.dto';
+import { WalletGetBalanceDto } from './dto/wallet-get-balance.dto';
 
 @Injectable()
 export class WalletService {
@@ -42,6 +43,16 @@ export class WalletService {
       isCoinAvailable: true,
       isRemoveSuccess: true,
       removedAddress: addressFrom
+    }
+  }
+
+  async getWalletBalance(walletGetBalanceDto: WalletGetBalanceDto ): Promise<{
+    isCoinAvailable: boolean,
+    amount: string,
+  }> {
+  return {
+      isCoinAvailable: true,
+      amount: "100000"
     }
   }
 }

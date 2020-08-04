@@ -1,8 +1,9 @@
-import { Controller, Post, Body, ValidationPipe, Delete } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Delete, Get, Query } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { WalletCreateDto } from './dto/walet-create.dto';
 import { WalletImportDto } from './dto/wallet-import.dto';
 import { WalletDeleteDto } from './dto/wallet-delete.dto';
+import { WalletGetBalanceDto } from './dto/wallet-get-balance.dto';
 
 @Controller('wallet')
 export class WalletController {
@@ -31,5 +32,13 @@ export class WalletController {
     removedAddress: string,
   }> {
     return this.walletService.deleteWallet(walletDeleteDto);
+  }
+
+  @Get('/balance')
+  getWalletBalance(@Query(ValidationPipe) walletGetBalanceDto: WalletGetBalanceDto):Promise<{
+    isCoinAvailable: boolean,
+    amount: string,
+  }> {
+    return this.walletService.getWalletBalance(walletGetBalanceDto);
   }
 }

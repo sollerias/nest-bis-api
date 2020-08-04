@@ -12,10 +12,10 @@ export class TransactionGetHistoryDto {
   address: string;
 
   @IsNotEmpty()
-  @IsInt()
+  @IsString()
   page: number;
 
   @IsNotEmpty()
-  @IsInt()
+  @IsString()
   limit: number;
 }

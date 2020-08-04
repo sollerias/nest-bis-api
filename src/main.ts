@@ -6,7 +6,6 @@ async function bootstrap() {
     {
       logger: ['log', 'error', 'warn', 'debug'],
     });
-  console.log('THIS IS PORTAAAAA!: ', process.env.PORT);
   await app.listen(process.env.PORT || 8000);
 }
 bootstrap();

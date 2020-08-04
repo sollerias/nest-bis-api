@@ -1,39 +1,18 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
-// import { ServiceEntity } from './auth/service.entity';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { WalletsModule } from './wallets/wallets.module';
+import { TransactionsModule } from './transactions/transactions.module';
+import { CoinsModule } from './coins/coins.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { typeOrmConfig } from './config/typeorm.config';
 @Module({
   imports: [
-    AuthModule,
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('DB_HOST'),
-        port: +configService.get<number>('DB_PORT'),
-        username: configService.get('DB_USER'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
-      }),
-      inject: [ConfigService],
-    }),
-    ConfigModule.forRoot({
-      envFilePath: './src/config/dev.env',
-      isGlobal: true
-    })
+    TypeOrmModule.forRoot(typeOrmConfig),
+    WalletsModule,
+    TransactionsModule,
+    CoinsModule,
+    AuthModule
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService],
 })
 
-export class AppModule {
-  constructor(private connection: Connection) {};
-}
+export class AppModule {}

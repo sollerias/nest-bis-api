@@ -1,8 +1,15 @@
 import { Controller, ValidationPipe, Body, Post, Get, Query } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { TransactionService } from './transaction.service';
 import { TransactionCreateDto } from './dto/transaction-create.dto';
 import { TransactionGetHistoryDto } from './dto/transaction-get-history.dto';
 
+@ApiTags('transaction')
 @Controller('transaction')
 export class TransactionController {
   constructor(private transactionService: TransactionService){}

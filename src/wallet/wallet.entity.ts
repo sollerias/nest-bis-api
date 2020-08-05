@@ -1,4 +1,5 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+// import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Wallet extends BaseEntity {

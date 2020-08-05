@@ -10,6 +10,7 @@ import { WalletCreateDto } from './dto/walet-create.dto';
 import { WalletImportDto } from './dto/wallet-import.dto';
 import { WalletDeleteDto } from './dto/wallet-delete.dto';
 import { WalletGetBalanceDto } from './dto/wallet-get-balance.dto';
+import { Wallet } from './wallet.entity';
 
 @ApiTags('wallet')
 @Controller('wallet')
@@ -17,6 +18,11 @@ export class WalletController {
   constructor(private walletService: WalletService) {}
 
   @Post('/create')
+  @ApiResponse({
+    status: 200,
+    description: 'The wallet created',
+    type: Wallet,
+  })
   createWallet(@Body(ValidationPipe) walletCreateDto: WalletCreateDto): Promise<{
     isCoinAvailable: boolean,
     address: string,

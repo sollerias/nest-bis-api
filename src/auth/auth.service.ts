@@ -18,7 +18,7 @@ export class AuthService {
     this.client = ClientProxyFactory.create({
       transport: Transport.NATS,
       options: {
-        url: 'nats://localhost:4221',
+        url: 'nats://localhost:14222',
       },
     });
   }

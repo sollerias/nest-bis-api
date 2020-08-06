@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
@@ -11,7 +12,11 @@ import { CoinModule } from './coin/coin.module';
     AuthModule,
     WalletModule,
     TransactionModule,
-    CoinModule
+    CoinModule,
+    ConfigModule.forRoot({
+      envFilePath: './.env',
+      isGlobal: true
+    })
   ],
 })
 

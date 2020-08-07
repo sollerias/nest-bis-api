@@ -24,11 +24,4 @@ export class AuthController {
   test(@Req() req) {
     console.log(req);
   }
-
-  @Post('/message')
-  async sendMessage(@Body('username') username: string): Promise<any> {
-    this.logger.log(`Send message: ${username}`);
-
-    return await this.authService.sendMessage(username);
-  }
 }

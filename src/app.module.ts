@@ -6,6 +6,8 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { WalletModule } from './wallet/wallet.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { CoinModule } from './coin/coin.module';
+import { MicroController } from './micro/micro.controller';
+import { MicroModule } from './micro/micro.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
@@ -16,8 +18,10 @@ import { CoinModule } from './coin/coin.module';
     ConfigModule.forRoot({
       envFilePath: './.env',
       isGlobal: true
-    })
+    }),
+    MicroModule
   ],
+  controllers: [MicroController],
 })
 
 export class AppModule {}

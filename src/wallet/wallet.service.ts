@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { WalletCreateDto } from './dto/walet-create.dto';
 import { WalletRepository } from './wallet.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,6 +8,8 @@ import { WalletGetBalanceDto } from './dto/wallet-get-balance.dto';
 
 @Injectable()
 export class WalletService {
+  private logger = new Logger('WalletService');
+
   constructor(
     @InjectRepository(WalletRepository)
     private walletRepository: WalletRepository,
@@ -17,6 +19,10 @@ export class WalletService {
     isCoinAvailable: boolean,
     address: string,
   }> {
+    // const blockchainWallet = await this.internalMicroService.createWallet(walletCreateDto);
+    // this.logger.log(blockchainWallet);
+    // return await this.walletRepository.createWallet({ coin: blockchainWallet.coin });
+    // return await blockchainWallet;
     return await this.walletRepository.createWallet(walletCreateDto);
   }
 

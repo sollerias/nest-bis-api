@@ -1,33 +1,28 @@
 import { NestFactory } from '@nestjs/core';
-import { Transport } from '@nestjs/microservices';
-import { AppModule } from './app.module';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { Logger } from '@nestjs/common';
+import { AppModule } from './app.module';
 
 const logger = new Logger('Main');
 
-const internalMicroserviceOptions = {
+const externalMicroserviceOptions = {
   transport: Transport.NATS,
   options: {
-    url: 'nats://127.0.0.1:14222',
+    url: 'nats://127.0.0.1:24222',
   },
 };
 
-
 async function bootstrap() {
-  // Begin: HTTP Server
-  const httpApp = await NestFactory.create(AppModule,
-    {
-      logger: ['log', 'error', 'warn', 'debug'],
-    });
-  // End: HTTP Server
+  const app = await NestFactory.create(AppModule);
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.NATS,
+    options: {
+      url: 'nats://127.0.0.1:14222',
+    },
+  });
 
-  // Begin: Internal NATS Microservice
-  const internalMicroservice = await NestFactory.createMicroservice(AppModule, internalMicroserviceOptions);
-  // End: Internal NATS Microservice
-
-  await httpApp.listen(process.env.PORT || 8000);
-  await internalMicroservice.listen(() => {
-    logger.log('InternalMicroservice is listening...');
-  })
+  await app.startAllMicroservicesAsync();
+  await app.listen(process.env.PORT || 8000);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

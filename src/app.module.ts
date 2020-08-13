@@ -6,8 +6,8 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { WalletModule } from './wallet/wallet.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { CoinModule } from './coin/coin.module';
-import { InternalMicroModule } from './microservice/internal-micro/internal-micro.module';
-import { ExternalMicroModule } from './microservice/external-micro/external-micro.module';
+import { MicroserviceModule } from './microservice/microservice.module';
+import { MicrosModule } from './micros/micros.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
@@ -19,8 +19,9 @@ import { ExternalMicroModule } from './microservice/external-micro/external-micr
       envFilePath: './.env',
       isGlobal: true
     }),
-    InternalMicroModule,
-    ExternalMicroModule
+    MicroserviceModule,
+    MicrosModule,
+
   ],
 })
 

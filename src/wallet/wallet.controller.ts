@@ -12,11 +12,11 @@ export class WalletController {
   constructor(private walletService: WalletService) {}
 
   @Post('/create')
-  createWallet(@Body(ValidationPipe) walletCreateDto: WalletCreateDto): Promise<{
+  async createWallet(@Body(ValidationPipe) walletCreateDto: WalletCreateDto): Promise<{
     isCoinAvailable: boolean,
     address: string,
   }> {
-    return this.walletService.createWallet(walletCreateDto);
+    return await this.walletService.createWallet(walletCreateDto);
   }
 
   @Post('/import')

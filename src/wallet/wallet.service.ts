@@ -1,4 +1,4 @@
-import { Injectable, Logger, Inject } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WalletCreateDto } from './dto/walet-create.dto';
 import { WalletRepository } from './wallet.repository';
@@ -17,32 +17,49 @@ export class WalletService {
     private walletRepository: WalletRepository,
   ) {}
 
+  /**
+   * createWallet() - send wallet data to securestorage microservice,
+   * receive wallet address and save it to DB.
+   * @param walletCreateDto
+   */
   async createWallet(walletCreateDto: WalletCreateDto): Promise<{
     isCoinAvailable: boolean,
     address: string,
   }> {
-    const kek = await this.microsService.createWallet(walletCreateDto);
-    this.logger.log(kek);
-    return await this.walletRepository.createWallet(walletCreateDto);
+    const microserviceWalletAddress = await this.microsService.createWallet(walletCreateDto);
+    this.logger.log(microserviceWalletAddress);
+
+    return await this.walletRepository.createWallet(microserviceWalletAddress.address);
   }
 
+  /**
+   * importWallet() - send wallet data to securestorage microservice,
+   * receive wallet address and save it to DB.
+   * @param walletImportDto
+   */
   async importWallet(walletImportDto: WalletImportDto): Promise<{
     isCoinAvailable: boolean,
     address: string,
   }> {
-    const kek = await this.microsService.importWallet(walletImportDto);
-    this.logger.log(kek);
-    return await this.walletRepository.importWallet(walletImportDto);
+    const microserviceWalletAddress = await this.microsService.importWallet(walletImportDto);
+    this.logger.log(microserviceWalletAddress);
+
+    return await this.walletRepository.importWallet(microserviceWalletAddress.address);
   }
 
+  /**
+   * deleteWallet() - send wallet data to securestorage microservice,
+   * receive notify, that wallet deleted and delete it from DB.
+   * @param walletDeleteDto
+   */
   async deleteWallet(walletDeleteDto: WalletDeleteDto): Promise<{
     isCoinAvailable: boolean,
     isRemoveSuccess: boolean,
     removedAddress: string,
   }> {
-    const kek = await this.microsService.deleteWallet(walletDeleteDto);
-    this.logger.log(kek);
-    const { coin, addressFrom, addressTo } = walletDeleteDto;
+    const deletedWalletInfo = await this.microsService.deleteWallet(walletDeleteDto);
+    this.logger.log(deletedWalletInfo);
+    const { removedAddress } = deletedWalletInfo;
     // TODO: for future
     // const result = await this.walletRepository.delete(addressFrom);
     // if (result.affected === 0) {
@@ -52,7 +69,7 @@ export class WalletService {
     return {
       isCoinAvailable: true,
       isRemoveSuccess: true,
-      removedAddress: addressFrom
+      removedAddress
     }
   }
 
@@ -60,11 +77,13 @@ export class WalletService {
     isCoinAvailable: boolean,
     amount: string,
   }> {
-    const kek = await this.microsService.getWalletBalance(walletGetBalanceDto);
-    this.logger.log(kek);
+    const getBalanceInfo = await this.microsService.getWalletBalance(walletGetBalanceDto);
+    this.logger.log(getBalanceInfo);
+    const { isCoinAvailable, amount } = getBalanceInfo;
+
     return {
-        isCoinAvailable: true,
-        amount: "100000"
+        isCoinAvailable,
+        amount,
       }
   }
 }

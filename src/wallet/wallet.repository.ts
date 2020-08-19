@@ -12,15 +12,15 @@ export class WalletRepository extends Repository<Wallet> {
    * createWallet() - create wallet
    * @param walletCreateDto
    */
-  async createWallet(walletCreateDto: WalletCreateDto): Promise<{
+  async createWallet(address: string): Promise<{
     isCoinAvailable: boolean,
     address: string,
   }> {
-    const { coin } = walletCreateDto;
+    // const { coin } = walletCreateDto;
 
     const wallet = new Wallet();
-    this.logger.log(coin);
-    wallet.address = `${coin}1tiutbhuwqw27r4z0xkg6kr7x7vu6c4v9v94n`;
+    this.logger.log(address);
+    wallet.address = address;
     wallet.isCoinAvailable = true;
     wallet.privKey = 'sdflj445f9ajrtjqqj324jgt93q490gvij';
     wallet.pubKey = 'kghjf2341gdf5f9ajrtjqqj324jgt93q490gvij';
@@ -40,17 +40,16 @@ export class WalletRepository extends Repository<Wallet> {
    * importWallet() - import wallet
    * @param walletImportDto
    */
-  async importWallet(walletImportDto: WalletImportDto): Promise<{
+  async importWallet(address: string): Promise<{
     isCoinAvailable: boolean,
     address: string,
   }> {
-    const { coin, privKey } = walletImportDto;
 
     const wallet = new Wallet();
 
-    wallet.address = `${coin}1tiutbhuwqw27r4z0xkg6kr7x7vu6c4v9v94n`;
+    wallet.address = address;
     wallet.isCoinAvailable = true;
-    wallet.privKey = privKey;
+    wallet.privKey = '3wedf2341gdf5f9ajrtjqqj324jgt93q490gvij';
     wallet.pubKey = 'kghjf2341gdf5f9ajrtjqqj324jgt93q490gvij';
     try {
       await wallet.save();

@@ -1,13 +1,11 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { WalletCreateDto } from './dto/walet-create.dto';
 import { WalletRepository } from './wallet.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 import { WalletImportDto } from './dto/wallet-import.dto';
 import { WalletDeleteDto } from './dto/wallet-delete.dto';
 import { WalletGetBalanceDto } from './dto/wallet-get-balance.dto';
 import { MicrosService } from 'src/micros/micros.service';
-import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
-import { resolve } from 'path';
 
 @Injectable()
 export class WalletService {
@@ -17,30 +15,14 @@ export class WalletService {
     private microsService: MicrosService,
     @InjectRepository(WalletRepository)
     private walletRepository: WalletRepository,
-    @Inject('WALLET')
-    private walletMicroService: ClientProxy,
   ) {}
 
   async createWallet(walletCreateDto: WalletCreateDto): Promise<{
     isCoinAvailable: boolean,
     address: string,
   }> {
-    const kek = await this.microsService.getWalletCredentials(walletCreateDto);
-    console.log(kek);
-    // this.walletMicroService
-    //   .send({cmd: 'create_wallet1'},{
-    //     username: 'Kek Vorobek',
-    //     message: 'be with you',
-    //   })
-    //   .subscribe({
-    //     next: users => {
-    //       console.log('Wallet Service return: ', users);
-    //       return users;
-    //     },
-    //     error: error => {
-    //       console.log(error);
-    //     }
-    // });
+    const kek = await this.microsService.createWallet(walletCreateDto);
+    this.logger.log(kek);
     return await this.walletRepository.createWallet(walletCreateDto);
   }
 
@@ -48,6 +30,8 @@ export class WalletService {
     isCoinAvailable: boolean,
     address: string,
   }> {
+    const kek = await this.microsService.importWallet(walletImportDto);
+    this.logger.log(kek);
     return await this.walletRepository.importWallet(walletImportDto);
   }
 
@@ -56,6 +40,8 @@ export class WalletService {
     isRemoveSuccess: boolean,
     removedAddress: string,
   }> {
+    const kek = await this.microsService.deleteWallet(walletDeleteDto);
+    this.logger.log(kek);
     const { coin, addressFrom, addressTo } = walletDeleteDto;
     // TODO: for future
     // const result = await this.walletRepository.delete(addressFrom);
@@ -74,9 +60,11 @@ export class WalletService {
     isCoinAvailable: boolean,
     amount: string,
   }> {
-  return {
-      isCoinAvailable: true,
-      amount: "100000"
-    }
+    const kek = await this.microsService.getWalletBalance(walletGetBalanceDto);
+    this.logger.log(kek);
+    return {
+        isCoinAvailable: true,
+        amount: "100000"
+      }
   }
 }

@@ -1,19 +1,18 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
 
 @Controller('micros')
 export class MicrosController {
-  @MessagePattern({ cmd: 'create_wallet1' })
+  @MessagePattern({ cmd: 'create_wallet_coin' })
   async receiveCredentials(data: {
-    username: string,
+    error: false,
     message: string,
   }): Promise<any>{
-    const { username, message } = data;
+    const { error, message } = data;
     console.log(data);
     const result = {
       error: false,
-      message: `Captain ${username} ${message} forever!`,
+      message: `Captain ${error} ${message} forever!`,
     };
     return result;
   }

@@ -10,14 +10,14 @@ import { MicrosModule } from './micros/micros.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
-    AuthModule,
-    WalletModule,
-    TransactionModule,
-    CoinModule,
     ConfigModule.forRoot({
       envFilePath: './.env',
       isGlobal: true
     }),
+    AuthModule,
+    WalletModule,
+    TransactionModule,
+    CoinModule,
     MicrosModule,
   ],
 })
